@@ -6,6 +6,7 @@
     "node_modules"
   ],
   "compilerOptions": {
-    "sourceMap": true
+    "sourceMap": true,
+    "module": "CommonJS"
   }
 }
