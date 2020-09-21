@@ -16,10 +16,12 @@
       "ES6"
     ],
     // 是否移除编译后的文件的注释
-    "removeComments": false,
+    "removeComments": true,
     // 是否允许使用 import Vue from 'vue' 格式
     "allowSyntheticDefaultImports": true,
     // 是否添加兼容代码，当把代码编译成 commonJS 的时候才会起作用
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    // './src/assets/logo.png' 此时可以简写成 'src/assets/logo.png'
+    "baseUrl": "./"
   }
 }
