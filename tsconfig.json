@@ -22,6 +22,7 @@
     // 是否添加兼容代码，当把代码编译成 commonJS 的时候才会起作用
     "esModuleInterop": true,
     // './src/assets/logo.png' 此时可以简写成 'src/assets/logo.png'
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "jsx": "preserve"
   }
 }
