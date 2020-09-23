@@ -4,6 +4,6 @@ import "./assets/style/golobal.scss"
 export default defineComponent({
   name: "App",
   setup() {
-    return () => <div>demo</div>
+    return () => <div>demos</div>
   },
 })
