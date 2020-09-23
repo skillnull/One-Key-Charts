@@ -8,13 +8,15 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write",
       "eslint --fix",
-      "prettier --write"
+      "git add"
     ]
   },
   "dependencies": {
