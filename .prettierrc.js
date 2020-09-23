@@ -5,5 +5,7 @@ module.exports = {
   // true: { foo: bar } false: {foo: bar}
   bracketSpacing: true,
   // 箭头函数是否加圆括号 always: (x) => x   avoid: x => x
-  arrowParens: "avoid"
+  arrowParens: "avoid",
+  // 确保对象的最后一个属性后会有一个逗号
+  trailingComma: 'none'
 }
