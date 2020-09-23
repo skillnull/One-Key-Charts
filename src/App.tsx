@@ -1,4 +1,4 @@
-import { defineComponent } from "vue"
+import { defineComponent, onMounted } from "vue"
 import "./assets/style/golobal.scss"
 
 export default defineComponent({
@@ -6,5 +6,4 @@ export default defineComponent({
   setup() {
     return () => <div>demo</div>
   },
-  onMounted() {},
 })
