@@ -23,6 +23,8 @@
     "esModuleInterop": true,
     // './src/assets/logo.png' 此时可以简写成 'src/assets/logo.png'
     "baseUrl": "./",
+    // generate d.ts files
+    "declaration": true,
     "jsx": "preserve"
   }
 }

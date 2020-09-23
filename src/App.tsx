@@ -6,4 +6,5 @@ export default defineComponent({
   setup() {
     return () => <div>demo</div>
   },
+  onMounted() {},
 })

@@ -1,7 +1,7 @@
 module.exports = {
   parser: "vue-eslint-parser",
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: "@typescript-eslint/parser",
     sourceType: "module",
     ecmaVersion: 2020,
     ecmaFeatures: {

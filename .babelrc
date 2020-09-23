@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "@babel/env"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryDirectory": "es",
+        "style": true
+      }
+    ]
+  ]
+}
