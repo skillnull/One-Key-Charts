@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     'no-console': 0,
     'no-unused-vars': 0,
+    'comma-dangle': 0,
     'prettier/prettier': ['error', {}, {usePrettierrc: true}]
   },
   extends: [
