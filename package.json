@@ -14,14 +14,16 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,md}": [
+    "*.{js,jsx,ts,tsx,json,css,md}": [
       "prettier --write",
       "eslint --fix",
       "git add"
     ]
   },
   "dependencies": {
-    "vue": "^3.0.0-rc.1"
+    "messageformat": "^3.0.0-beta.2",
+    "vue": "^3.0.0-rc.1",
+    "vue-i18n": "^8.22.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
