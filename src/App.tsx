@@ -1,9 +1,10 @@
 import { defineComponent } from "vue"
-import "./assets/style/golobal.scss"
+import Entry from "./view/index"
 
 export default defineComponent({
   name: "App",
+  components: { Entry },
   setup() {
-    return () => <div>demo</div>
+    return () => <Entry></Entry>
   }
 })
