@@ -1,9 +1,8 @@
 import { defineComponent } from "vue"
-import Entry from "./view/index"
+import Entry from "./view"
 
 export default defineComponent({
   name: "App",
-  components: { Entry },
   setup() {
     return () => <Entry></Entry>
   }
