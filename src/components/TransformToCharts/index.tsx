@@ -1,12 +1,19 @@
-import { defineComponent } from "vue"
-
-interface ChartsProps {
-  content: string
-}
+import {
+  defineComponent,
+  watchEffect,
+  inject,
+  getCurrentInstance,
+  toRef
+} from "vue"
 
 const Charts = defineComponent({
   name: "TransformToCharts",
-  setup(props: ChartsProps, { slots }) {
+  props: {
+    content: String
+  },
+  setup() {
+    const { props } = getCurrentInstance()
+
     return () => (
       <>
         <span>{props.content}</span>
