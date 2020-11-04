@@ -1,20 +1,14 @@
 {
-  "include": [
-    "./**/*.ts"
-  ],
+  "include": ["./**/*.ts"],
   // 仅对 include 的内容有效
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     // 生成一个.map.js的文件，类似于webpack的sourceMap
     "sourceMap": true,
     // 代码的编译格式: CommonJS、UMD、AMD、System、ESNext、ES2020、None
     "module": "CommonJS",
     // 引入 ES 的功能库
-    "lib": [
-      "ES6"
-    ],
+    "lib": ["ES6", "dom"],
     // 是否移除编译后的文件的注释
     "removeComments": true,
     // 是否允许使用 import Vue from 'vue' 格式
