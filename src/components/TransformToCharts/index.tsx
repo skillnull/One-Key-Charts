@@ -1,4 +1,5 @@
 import {defineComponent, getCurrentInstance} from "vue"
+import echarts from "echarts"
 
 const Charts = defineComponent({
   name: "TransformToCharts",
@@ -25,6 +26,8 @@ const Charts = defineComponent({
   setup() {
     const {props} = getCurrentInstance()
 
+    console.log(echarts)
+
     return () => (
       <div class="convert-chart-box">
         <div v-click-outside="close" class="convert-chart-content">
@@ -32,7 +35,9 @@ const Charts = defineComponent({
             <div class="title">一键图表</div>
           </div>
         </div>
-        <div class="content"></div>
+        <div class="content">
+          <div id="chart"></div>
+        </div>
       </div>
     )
   }

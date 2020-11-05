@@ -1,9 +1,11 @@
-const fs = require('fs')
-const dotenv = require('dotenv')
+const fs = require("fs")
+const dotenv = require("dotenv")
+
 const envFiles = [
   /** default file */ `.env`,
-  /** mode file */ `.env.${ process.env.NODE_ENV }`
+  /** mode file */ `.env.${process.env.NODE_ENV}`
 ]
+
 for (const file of envFiles) {
   const envConfig = dotenv.parse(fs.readFileSync(file))
   for (const k in envConfig) {
@@ -13,6 +15,9 @@ for (const file of envFiles) {
 
 module.exports = {
   alias: {},
+  optimizeDeps: {
+    include: []
+  },
   hostname: process.env.VITE_HOST,
   port: process.env.VITE_PORT,
   // 是否自动在浏览器打开
@@ -34,10 +39,10 @@ module.exports = {
   outDir: process.env.VITE_OUTPUT_DIR,
   // 反向代理
   proxy: {
-    'api': {
-      target: 'http://www.skillnull.com',
+    api: {
+      target: "http://www.skillnull.com",
       changeOrigin: true,
-      rewrite: path => path.replace(/^\/api/, '')
+      rewrite: path => path.replace(/^\/api/, "")
     }
   }
 }

@@ -8,23 +8,21 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: [
-    'vue',
-    'prettier'
-  ],
+  plugins: ["vue", "prettier"],
   rules: {
-    'no-console': 0,
-    'no-unused-vars': 0,
-    'comma-dangle': 0,
-    'prettier/prettier': ['error', {}, {usePrettierrc: true}]
+    "no-console": 0,
+    "no-unused-vars": 0,
+    "no-undef": 0,
+    "comma-dangle": 0,
+    "prettier/prettier": ["error", {}, {usePrettierrc: true}]
   },
   extends: [
-    'eslint:recommended',
-    'plugin:vue/recommended',
-    'plugin:vue/essential',
-    'plugin:vue/vue3-recommended',
-    'prettier/@typescript-eslint',
-    'eslint-config-prettier',
-    'plugin:prettier/recommended'
+    "eslint:recommended",
+    "plugin:vue/recommended",
+    "plugin:vue/essential",
+    "plugin:vue/vue3-recommended",
+    "prettier/@typescript-eslint",
+    "eslint-config-prettier",
+    "plugin:prettier/recommended"
   ]
 }
