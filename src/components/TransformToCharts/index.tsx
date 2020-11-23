@@ -1,4 +1,4 @@
-import {defineComponent, getCurrentInstance, reactive} from "vue"
+import {defineComponent, getCurrentInstance, reactive, onMounted} from "vue"
 import {thousandsFormateTofixed} from "../../library/common"
 import echarts from "echarts"
 
@@ -31,26 +31,32 @@ const Charts = defineComponent({
     })
 
     // 渲染图表
-    function renderCharts(item, id, style?) {
+    function renderCharts(type, id, style?) {
+      const chart_data: any = {
+        data: props.data,
+        xAxis: props.xAxis,
+        type: type
+      }
+
       let chart_dom: HTMLElement = document.getElementById(id)
       if (!chart_dom) return
       const chart = echarts.init(chart_dom, "walden")
       const series = []
       let option = {}
       const data_length =
-        (item.data &&
-          item.data[0] &&
-          item.data[0].data &&
-          item.data[0].data.length) ||
+        (chart_data.data &&
+          chart_data.data[0] &&
+          chart_data.data[0].data &&
+          chart_data.data[0].data.length) ||
         4
-      switch (item.type) {
+      switch (chart_data.type) {
         case "line":
-          item.data &&
-            item.data.length > 0 &&
-            item.data.map((ele, idx) => {
+          chart_data.data &&
+            chart_data.data.length > 0 &&
+            chart_data.data.map((ele, idx) => {
               series.push({
                 name: ele.name,
-                type: item.type,
+                type: chart_data.type,
                 smooth: true,
                 symbolSize: 4,
                 data: ele.data,
@@ -59,7 +65,7 @@ const Charts = defineComponent({
             })
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 10,
               left: "center",
               textStyle: {
@@ -93,7 +99,7 @@ const Charts = defineComponent({
               top: 0,
               left: "5%",
               padding: 0,
-              data: item.legend
+              data: chart_data.legend
             },
             animation: false,
             xAxis: {
@@ -136,7 +142,7 @@ const Charts = defineComponent({
               splitLine: {
                 show: false
               },
-              data: item.xAxis
+              data: chart_data.xAxis
             },
             yAxis: {
               type: "value"
@@ -150,12 +156,12 @@ const Charts = defineComponent({
           }
           break
         case "bar":
-          item.data &&
-            item.data.length > 0 &&
-            item.data.map((ele, idx) => {
+          chart_data.data &&
+            chart_data.data.length > 0 &&
+            chart_data.data.map((ele, idx) => {
               series.push({
                 name: ele.name,
-                type: item.type,
+                type: chart_data.type,
                 smooth: true,
                 barGap: "0%",
                 data: ele.data,
@@ -164,7 +170,7 @@ const Charts = defineComponent({
             })
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 10,
               left: "center",
               textStyle: {
@@ -198,7 +204,7 @@ const Charts = defineComponent({
               top: 0,
               left: "5%",
               padding: 0,
-              data: item.legend
+              data: chart_data.legend
             },
             animation: false,
             xAxis: {
@@ -239,7 +245,7 @@ const Charts = defineComponent({
                 show: true,
                 alignWithLabel: true
               },
-              data: item.xAxis
+              data: chart_data.xAxis
             },
             yAxis: {
               type: "value"
@@ -254,8 +260,8 @@ const Charts = defineComponent({
           break
         case "pie":
           series.push({
-            name: item.name,
-            type: item.type,
+            name: chart_data.name,
+            type: chart_data.type,
             radius: ["45%", "70%"],
             center: ["50%", "55%"],
             label: {
@@ -281,11 +287,11 @@ const Charts = defineComponent({
               }
             },
             animation: false,
-            data: item.data
+            data: chart_data.data
           })
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 0,
               left: "center",
               textStyle: {
@@ -311,20 +317,20 @@ const Charts = defineComponent({
               itemHeight: 8,
               itemWidth: 18,
               orient: "vertical",
-              data: item.legend
+              data: chart_data.legend
             },
             series: series
           }
           break
         case "bullet":
-          item.data &&
-            item.data.length > 0 &&
-            item.data.map((ele, idx) => {
+          chart_data.data &&
+            chart_data.data.length > 0 &&
+            chart_data.data.map((ele, idx) => {
               series.push(ele)
             })
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 15,
               left: "center",
               textStyle: {
@@ -343,10 +349,10 @@ const Charts = defineComponent({
                   params.length > 0 &&
                   params.map(item => {
                     result.push(
-                      `<div>${item.marker} ${
-                        item.seriesName
+                      `<div>${chart_data.marker} ${
+                        chart_data.seriesName
                       } : ${thousandsFormateTofixed(
-                        item.value,
+                        chart_data.value,
                         2,
                         false
                       )}</div>`
@@ -360,7 +366,7 @@ const Charts = defineComponent({
               }
             },
             legend: {
-              data: item.legend,
+              data: chart_data.legend,
               icon: "roundRect",
               left: 5,
               top: -5,
@@ -401,11 +407,11 @@ const Charts = defineComponent({
                   }
                 }
               },
-              data: item.xAxis
+              data: chart_data.xAxis
             },
             yAxis: {
               type: "value",
-              inverse: item.inverse,
+              inverse: chart_data.inverse,
               splitLine: {
                 show: false
               },
@@ -423,14 +429,14 @@ const Charts = defineComponent({
           }
           break
         case "bullet_across":
-          item.data &&
-            item.data.length > 0 &&
-            item.data.map((ele, idx) => {
+          chart_data.data &&
+            chart_data.data.length > 0 &&
+            chart_data.data.map((ele, idx) => {
               series.push(ele)
             })
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 15,
               left: "center",
               textStyle: {
@@ -449,10 +455,10 @@ const Charts = defineComponent({
                   params.length > 0 &&
                   params.map(item => {
                     result.push(
-                      `<div>${item.marker} ${
-                        item.seriesName
+                      `<div>${chart_data.marker} ${
+                        chart_data.seriesName
                       } : ${thousandsFormateTofixed(
-                        item.value,
+                        chart_data.value,
                         2,
                         false
                       )}</div>`
@@ -466,7 +472,7 @@ const Charts = defineComponent({
               }
             },
             legend: {
-              data: item.legend,
+              data: chart_data.legend,
               icon: "roundRect",
               left: 5,
               top: -5,
@@ -474,9 +480,9 @@ const Charts = defineComponent({
               itemWidth: 18
             },
             xAxis: {
-              show: item.showX,
+              show: chart_data.showX,
               type: "value",
-              inverse: item.inverse,
+              inverse: chart_data.inverse,
               axisLine: {
                 show: true
               },
@@ -485,7 +491,7 @@ const Charts = defineComponent({
               }
             },
             yAxis: {
-              show: item.showY,
+              show: chart_data.showY,
               type: "category",
               splitLine: {
                 show: false
@@ -519,7 +525,7 @@ const Charts = defineComponent({
                   }
                 }
               },
-              data: item.xAxis
+              data: chart_data.xAxis
             },
             grid: {
               left: 0,
@@ -534,7 +540,7 @@ const Charts = defineComponent({
           option = {
             title: {
               show: false,
-              text: item.name,
+              text: chart_data.name,
               textStyle: {
                 fontSize: 14
               }
@@ -581,8 +587,8 @@ const Charts = defineComponent({
             series: [
               {
                 name: "",
-                data: item.data[0],
-                type: item.type,
+                data: chart_data.data[0],
+                type: chart_data.type,
                 symbol: "pin",
                 symbolSize: function (data) {
                   return data[2] ? 20 : 0
@@ -598,7 +604,7 @@ const Charts = defineComponent({
         case "radar":
           option = {
             title: {
-              text: item.name || "",
+              text: chart_data.name || "",
               top: 15,
               left: "center",
               textStyle: {
@@ -609,7 +615,7 @@ const Charts = defineComponent({
             tooltip: {
               confine: true,
               formatter: params => {
-                const xAxis = item.xAxis
+                const xAxis = chart_data.xAxis
                 const value = params.value
                 const result = []
                 xAxis &&
@@ -635,7 +641,7 @@ const Charts = defineComponent({
               }
             },
             legend: {
-              data: item.legend,
+              data: chart_data.legend,
               icon: "roundRect",
               left: 5,
               top: -5,
@@ -666,9 +672,9 @@ const Charts = defineComponent({
               },
               radius: "65%",
               center: ["50%", "60%"],
-              indicator: item.xAxis
+              indicator: chart_data.xAxis
             },
-            series: item.data
+            series: chart_data.data
           }
           break
         default:
@@ -691,19 +697,15 @@ const Charts = defineComponent({
       })
     }
 
+    onMounted(() => {
+      renderCharts("line", "chart")
+    })
+
     return () => (
       <div class="convert-chart-box">
         <div v-click-outside="close" class="convert-chart-content">
           <div class="header">
-            <div
-              class="title"
-              onClick={() =>
-                renderCharts(
-                  {data: props.data, xAxis: props.xAxis, type: "line"},
-                  "chart"
-                )
-              }
-            >
+            <div class="title" onClick={() => renderCharts("line", "chart")}>
               一键图表
             </div>
           </div>
