@@ -51,18 +51,16 @@ const Charts = defineComponent({
         4
       switch (chart_data.type) {
         case "line":
-          chart_data.data &&
-            chart_data.data.length > 0 &&
-            chart_data.data.map((ele, idx) => {
-              series.push({
-                name: ele.name,
-                type: chart_data.type,
-                smooth: true,
-                symbolSize: 4,
-                data: ele.data,
-                animation: false
-              })
+          for (let ele in chart_data.data) {
+            series.push({
+              name: ele,
+              type: chart_data.type,
+              smooth: true,
+              symbolSize: 4,
+              data: chart_data.data[ele],
+              animation: false
             })
+          }
           option = {
             title: {
               text: chart_data.name || "",
