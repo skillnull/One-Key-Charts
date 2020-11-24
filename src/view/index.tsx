@@ -531,11 +531,31 @@ const Entry = defineComponent({
         "23:40",
         "23:50"
       ],
-      height: "500px"
+      height: "500px",
+      themes: ["#4cb9e5", "#40a9ff", "#52c41a"]
     })
+
+    function changeTheme(color) {
+      document
+        .getElementsByTagName("body")[0]
+        .style.setProperty("--primary_bg_color", color)
+    }
 
     return () => (
       <div class="wrap">
+        <div class="themes">
+          {state.themes.map(item => {
+            return (
+              <div
+                onClick={_ => changeTheme(item)}
+                style={{backgroundColor: item}}
+                class="inline-block sk-btn-primary"
+              >
+                {item}
+              </div>
+            )
+          })}
+        </div>
         <Charts data={state.data} xAxis={state.xAxis} height={state.height} />
       </div>
     )

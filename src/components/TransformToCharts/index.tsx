@@ -69,7 +69,10 @@ const Charts = defineComponent({
               smooth: true,
               symbolSize: 0,
               data: chart_data.data[ele],
-              animation: false
+              animation: false,
+              lineStyle: {
+                width: 1
+              }
             })
           }
           option = {
@@ -716,7 +719,7 @@ const Charts = defineComponent({
             {state.charts_type.map((item, index) => {
               return (
                 <div
-                  class="title"
+                  class="title sk-btn-primary"
                   onClick={() => renderCharts(item.type, "chart")}
                 >
                   {item.name}
