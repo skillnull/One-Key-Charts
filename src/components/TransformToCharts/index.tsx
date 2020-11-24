@@ -1,6 +1,7 @@
 import {defineComponent, getCurrentInstance, reactive, onMounted} from "vue"
 import {thousandsFormateTofixed} from "../../library/common"
 import echarts from "echarts"
+import "./index.scss"
 
 const Charts = defineComponent({
   name: "TransformToCharts",
@@ -27,7 +28,16 @@ const Charts = defineComponent({
   setup() {
     const {props} = getCurrentInstance()
     const state = reactive({
-      chartsHeight: "300px"
+      charts_height: "300px",
+      charts_type: [
+        {type: "line", name: "折线图"},
+        {type: "bar", name: "柱状图"},
+        {type: "pie", name: "饼图"},
+        {type: "bullet", name: "子弹图"},
+        {type: "bullet_across", name: "横向子弹图"},
+        {type: "scatter", name: "离散图"},
+        {type: "radar", name: "雷达图"}
+      ]
     })
 
     // 渲染图表
@@ -682,7 +692,7 @@ const Charts = defineComponent({
       chart.setOption(option)
       chart_dom.setAttribute(
         "style",
-        style || `width:100%;height:${state.chartsHeight}`
+        style || `width:100%;height:${state.charts_height}`
       )
       resizeEhartsSize(chart)
     }
@@ -703,9 +713,16 @@ const Charts = defineComponent({
       <div class="convert-chart-box">
         <div v-click-outside="close" class="convert-chart-content">
           <div class="header">
-            <div class="title" onClick={() => renderCharts("line", "chart")}>
-              一键图表
-            </div>
+            {state.charts_type.map((item, index) => {
+              return (
+                <div
+                  class="title"
+                  onClick={() => renderCharts(item.type, "chart")}
+                >
+                  {item.name}
+                </div>
+              )
+            })}
           </div>
         </div>
         <div class="content">

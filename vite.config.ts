@@ -1,4 +1,7 @@
 const fs = require("fs")
+const path = require("path")
+
+// Dotenv 是一个零依赖的模块，它能将环境变量中的变量从 .env 文件加载到 process.env 中
 const dotenv = require("dotenv")
 
 const envFiles = [
@@ -14,12 +17,22 @@ for (const file of envFiles) {
 }
 
 module.exports = {
-  alias: {},
+  alias: {
+    "/@/": path.resolve(__dirname, "./src")
+  },
   optimizeDeps: {
-    include: []
+    include: ["echarts"]
   },
   hostname: process.env.VITE_HOST,
   port: process.env.VITE_PORT,
+  // 引用全局 scss
+  cssPreprocessOptions: {
+    scss: {
+      additionalData: '@import "./src/assets/style/index.scss";'
+    }
+  },
+  // 压缩
+  minify: "esbuild",
   // 是否自动在浏览器打开
   open: false,
   // 是否开启 https

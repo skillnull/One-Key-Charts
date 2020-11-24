@@ -1,0 +1,17 @@
+.convert-chart-box {
+  width: 100vw;
+  height: 100vh;
+
+  .convert-chart-content {
+    .header {
+      text-align: center;
+
+      .title {
+        display: inline-block;
+        color: $primary_color;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}
