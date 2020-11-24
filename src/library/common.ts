@@ -5,7 +5,11 @@
  * @param showZero 是否显示小数点后面的0，默认显示
  * @returns {string}
  */
-export function thousandsFormateTofixed(number, digit, showZero) {
+export function thousandsFormateTofixed(
+  number: any,
+  digit: any,
+  showZero: any
+) {
   if (typeof number === "string") {
     number = +number
   }
@@ -96,7 +100,7 @@ export class ListenerPageVisibility {
  * @param startTime 开始时间
  * @param endTime 结束时间
  */
-export function compareTime(startTime, endTime) {
+export function compareTime(startTime: any, endTime: any) {
   let retValue = {
     Days: undefined,
     Years: undefined,
@@ -165,7 +169,7 @@ export function compareTime(startTime, endTime) {
  * @param paramName
  * @returns {any}
  */
-export function getParam(paramName) {
+export function getParam(paramName: any) {
   let searchResult = window.location.search.substr(1)
   let hashResult = window.location.hash.substr(2)
   let result = searchResult || hashResult
@@ -174,7 +178,7 @@ export function getParam(paramName) {
 }
 
 // 深度拷贝
-export function deepClone(obj) {
+export function deepClone(obj: any) {
   if (obj === null) return null // null 的情况
   if (obj instanceof RegExp) return new RegExp(obj) // 正则表达式的情况
   if (obj instanceof Date) return new Date(obj) // 日期对象的情况

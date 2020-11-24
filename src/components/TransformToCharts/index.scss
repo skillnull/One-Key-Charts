@@ -1,8 +1,11 @@
 .convert-chart-box {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 
   .convert-chart-content {
+    margin: 20px;
+
     .header {
       text-align: center;
 
@@ -13,5 +16,9 @@
         cursor: pointer;
       }
     }
+  }
+
+  .content {
+    margin: 50px 20px;
   }
 }

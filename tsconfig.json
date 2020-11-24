@@ -3,6 +3,10 @@
   // 仅对 include 的内容有效
   "exclude": ["node_modules"],
   "compilerOptions": {
+    // 与 vite.config.ts 配置的 alias 配合使用
+    "paths": {
+      "/@/*": ["./src/*"]
+    },
     // 生成一个.map.js的文件，类似于webpack的sourceMap
     "sourceMap": true,
     // 代码的编译格式: CommonJS、UMD、AMD、System、ESNext、ES2020、None

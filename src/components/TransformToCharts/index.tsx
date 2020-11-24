@@ -1,6 +1,7 @@
 import {defineComponent, getCurrentInstance, reactive, onMounted} from "vue"
-import {thousandsFormateTofixed} from "../../library/common"
+import {thousandsFormateTofixed} from "/@/library/common"
 import echarts from "echarts"
+import "/@/assets/themes/walden.js"
 import "./index.scss"
 
 const Charts = defineComponent({
@@ -66,7 +67,7 @@ const Charts = defineComponent({
               name: ele,
               type: chart_data.type,
               smooth: true,
-              symbolSize: 4,
+              symbolSize: 0,
               data: chart_data.data[ele],
               animation: false
             })
@@ -93,7 +94,7 @@ const Charts = defineComponent({
             },
             toolbox: {
               show: true,
-              right: 0,
+              right: "6%",
               top: 10,
               feature: {
                 dataZoom: {
@@ -105,7 +106,7 @@ const Charts = defineComponent({
             },
             legend: {
               top: 0,
-              left: "5%",
+              left: "6%",
               padding: 0,
               data: chart_data.legend
             },
@@ -117,7 +118,6 @@ const Charts = defineComponent({
               axisLabel: {
                 show: true,
                 inside: false,
-                interval: 0,
                 rotate: 0,
                 fontSize: 10,
                 color: "#555",
@@ -156,8 +156,8 @@ const Charts = defineComponent({
               type: "value"
             },
             grid: {
-              left: "14%",
-              right: 0,
+              left: "6%",
+              right: "6%",
               bottom: "12%"
             },
             series: series
