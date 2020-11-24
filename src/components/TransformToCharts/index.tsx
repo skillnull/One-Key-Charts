@@ -60,6 +60,30 @@ const Charts = defineComponent({
           chart_data.data[0].data &&
           chart_data.data[0].data.length) ||
         4
+      const grid = {
+        left: "6%",
+        right: "6%",
+        bottom: "12%"
+      }
+      const toolbox = {
+        show: true,
+        right: "6%",
+        top: 10,
+        feature: {
+          dataZoom: {
+            show: true,
+            title: {zoom: "区域缩放", back: "区域缩放还原"}
+          },
+          restore: {show: true, title: "还原"}
+        }
+      }
+      const legend = {
+        top: 0,
+        left: "6%",
+        padding: 0,
+        data: chart_data.legend
+      }
+
       switch (chart_data.type) {
         case "line":
           for (let ele in chart_data.data) {
@@ -95,24 +119,8 @@ const Charts = defineComponent({
               },
               confine: true
             },
-            toolbox: {
-              show: true,
-              right: "6%",
-              top: 10,
-              feature: {
-                dataZoom: {
-                  show: true,
-                  title: {zoom: "区域缩放", back: "区域缩放还原"}
-                },
-                restore: {show: true, title: "还原"}
-              }
-            },
-            legend: {
-              top: 0,
-              left: "6%",
-              padding: 0,
-              data: chart_data.legend
-            },
+            toolbox: toolbox,
+            legend: legend,
             animation: false,
             xAxis: {
               type: "category",
@@ -158,27 +166,24 @@ const Charts = defineComponent({
             yAxis: {
               type: "value"
             },
-            grid: {
-              left: "6%",
-              right: "6%",
-              bottom: "12%"
-            },
+            grid: grid,
             series: series
           }
           break
         case "bar":
-          chart_data.data &&
-            chart_data.data.length > 0 &&
-            chart_data.data.map((ele, idx) => {
-              series.push({
-                name: ele.name,
-                type: chart_data.type,
-                smooth: true,
-                barGap: "0%",
-                data: ele.data,
-                animation: false
-              })
+          for (let ele in chart_data.data) {
+            series.push({
+              name: ele,
+              type: chart_data.type,
+              smooth: true,
+              symbolSize: 0,
+              data: chart_data.data[ele],
+              animation: false,
+              lineStyle: {
+                width: 1
+              }
             })
+          }
           option = {
             title: {
               text: chart_data.name || "",
@@ -199,34 +204,22 @@ const Charts = defineComponent({
                 }
               }
             },
-            toolbox: {
-              show: true,
-              right: 0,
-              top: 10,
-              feature: {
-                dataZoom: {
-                  show: true,
-                  title: {zoom: "区域缩放", back: "区域缩放还原"}
-                },
-                restore: {show: true, title: "还原"}
-              }
-            },
-            legend: {
-              top: 0,
-              left: "5%",
-              padding: 0,
-              data: chart_data.legend
-            },
+            toolbox: toolbox,
+            legend: legend,
             animation: false,
             xAxis: {
               type: "category",
               boundaryGap: true,
               nameLocation: "start",
-              interval: true,
+              axisLine: {
+                show: false
+              },
+              splitLine: {
+                show: false
+              },
               axisLabel: {
                 show: true,
                 inside: false,
-                interval: 0,
                 rotate: 0,
                 fontSize: 10,
                 color: "#555",
@@ -261,11 +254,7 @@ const Charts = defineComponent({
             yAxis: {
               type: "value"
             },
-            grid: {
-              left: "14%",
-              right: 0,
-              bottom: "18%"
-            },
+            grid: grid,
             series: series
           }
           break
