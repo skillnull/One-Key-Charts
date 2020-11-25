@@ -33,11 +33,11 @@ const Charts = defineComponent({
       charts_type: [
         {type: "line", name: "折线图"},
         {type: "bar", name: "柱状图"},
-        {type: "pie", name: "饼图"},
+        // { type: "pie", name: "饼图" },
         {type: "bullet", name: "子弹图"},
         {type: "bullet_across", name: "横向子弹图"},
-        {type: "scatter", name: "离散图"},
-        {type: "radar", name: "雷达图"}
+        {type: "scatter", name: "离散图"}
+        // { type: "radar", name: "雷达图" }
       ]
     })
 
@@ -60,6 +60,7 @@ const Charts = defineComponent({
           chart_data.data[0].data &&
           chart_data.data[0].data.length) ||
         4
+
       const grid = {
         left: "6%",
         right: "6%",
@@ -258,76 +259,50 @@ const Charts = defineComponent({
             series: series
           }
           break
-        case "pie":
-          series.push({
-            name: chart_data.name,
-            type: chart_data.type,
-            radius: ["45%", "70%"],
-            center: ["50%", "55%"],
-            label: {
-              show: true,
-              distanceToLabelLine: 1,
-              fontSize: 10,
-              formatter: "{b}({d}%)",
-              position: "outside"
-            },
-            labelLine: {
-              length2: 5
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: 10,
-                fontWeight: "bold"
-              },
-              itemStyle: {
-                shadowBlur: 2,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            },
-            animation: false,
-            data: chart_data.data
-          })
-          option = {
-            title: {
-              text: chart_data.name || "",
-              top: 0,
-              left: "center",
-              textStyle: {
-                fontSize: 12,
-                fontWeight: 400
-              }
-            },
-            tooltip: {
-              trigger: "item",
-              confine: true,
-              formatter: params => {
-                const result = `${params.marker}${
-                  params.name
-                } : ${thousandsFormateTofixed(params.value, 2, true)}`
-                return result
-              }
-            },
-            legend: {
-              show: false,
-              icon: "roundRect",
-              left: 5,
-              top: -5,
-              itemHeight: 8,
-              itemWidth: 18,
-              orient: "vertical",
-              data: chart_data.legend
-            },
-            series: series
+        case "bullet": {
+          const _chart_data: any = []
+          for (let item in chart_data.data) {
+            _chart_data.push({
+              name: item,
+              data: chart_data.data[item]
+            })
           }
-          break
-        case "bullet":
-          chart_data.data &&
-            chart_data.data.length > 0 &&
-            chart_data.data.map((ele, idx) => {
+          let result = []
+          for (let [idx, ele] of _chart_data.entries()) {
+            if (idx === 0) {
+              result = [
+                {
+                  name: ele.name,
+                  type: "bar",
+                  barGap: "-300%",
+                  barWidth: 20,
+                  z: 10,
+                  data: ele.data,
+                  animation: false
+                }
+              ]
+            }
+            if (idx > 0) {
+              result.push({
+                name: ele.name,
+                type: "scatter",
+                symbol: "rect",
+                silent: true,
+                symbolSize: [30, 5],
+                symbolOffset: [0, 0],
+                z: 20,
+                animation: false,
+                data: ele.data
+              })
+            }
+          }
+
+          result &&
+            result.length > 0 &&
+            result.map(ele => {
               series.push(ele)
             })
+
           option = {
             title: {
               text: chart_data.name || "",
@@ -349,10 +324,10 @@ const Charts = defineComponent({
                   params.length > 0 &&
                   params.map(item => {
                     result.push(
-                      `<div>${chart_data.marker} ${
-                        chart_data.seriesName
+                      `<div>${item.marker} ${
+                        item.seriesName
                       } : ${thousandsFormateTofixed(
-                        chart_data.value,
+                        item.value,
                         2,
                         false
                       )}</div>`
@@ -365,23 +340,18 @@ const Charts = defineComponent({
                 type: "shadow"
               }
             },
-            legend: {
-              data: chart_data.legend,
-              icon: "roundRect",
-              left: 5,
-              top: -5,
-              itemHeight: 8,
-              itemWidth: 18
-            },
+            legend: legend,
             xAxis: {
               boundaryGap: true,
               axisLine: {
-                show: true
+                show: false
+              },
+              splitLine: {
+                show: false
               },
               axisLabel: {
                 show: true,
                 inside: false,
-                interval: 0,
                 rotate: 0,
                 fontSize: 10,
                 color: "#555",
@@ -419,15 +389,11 @@ const Charts = defineComponent({
                 formatter: "{value}"
               }
             },
-            grid: {
-              left: 0,
-              right: 0,
-              bottom: 0,
-              containLabel: true
-            },
+            grid: grid,
             series: series
           }
           break
+        }
         case "bullet_across":
           chart_data.data &&
             chart_data.data.length > 0 &&
@@ -599,6 +565,73 @@ const Charts = defineComponent({
                 }
               }
             ]
+          }
+          break
+        case "pie":
+          for (let ele in chart_data.data) {
+            series.push({
+              name: ele,
+              type: chart_data.type,
+              radius: ["45%", "70%"],
+              center: ["50%", "55%"],
+              label: {
+                show: true,
+                distanceToLabelLine: 1,
+                fontSize: 10,
+                formatter: "{b}({d}%)",
+                position: "outside"
+              },
+              labelLine: {
+                length2: 5
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: 10,
+                  fontWeight: "bold"
+                },
+                itemStyle: {
+                  shadowBlur: 2,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }
+              },
+              animation: false,
+              data: chart_data.data[ele]
+            })
+          }
+          option = {
+            title: {
+              text: chart_data.name || "",
+              top: 0,
+              left: "center",
+              textStyle: {
+                fontSize: 12,
+                fontWeight: 400
+              }
+            },
+            tooltip: {
+              trigger: "item",
+              confine: true,
+              formatter: params => {
+                console.log(params)
+                const result = `${params.marker}${
+                  params.name
+                } : ${thousandsFormateTofixed(params.value, 2, true)}`
+                return result
+              }
+            },
+            legend: {
+              show: false,
+              icon: "roundRect",
+              left: 5,
+              top: -5,
+              itemHeight: 8,
+              itemWidth: 18,
+              orient: "vertical",
+              data: legend
+            },
+            series: series
           }
           break
         case "radar":
