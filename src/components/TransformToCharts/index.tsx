@@ -52,7 +52,7 @@ const Charts = defineComponent({
       let chart_dom: HTMLElement = document.getElementById(id)
       if (!chart_dom) return
       const chart = echarts.init(chart_dom, "walden")
-      const series = []
+      let series = []
       let option = {}
       const data_length =
         (chart_data.data &&
@@ -267,10 +267,10 @@ const Charts = defineComponent({
               data: chart_data.data[item]
             })
           }
-          let result = []
+
           for (let [idx, ele] of _chart_data.entries()) {
             if (idx === 0) {
-              result = [
+              series = [
                 {
                   name: ele.name,
                   type: "bar",
@@ -283,7 +283,7 @@ const Charts = defineComponent({
               ]
             }
             if (idx > 0) {
-              result.push({
+              series.push({
                 name: ele.name,
                 type: "scatter",
                 symbol: "rect",
@@ -296,12 +296,6 @@ const Charts = defineComponent({
               })
             }
           }
-
-          result &&
-            result.length > 0 &&
-            result.map(ele => {
-              series.push(ele)
-            })
 
           option = {
             title: {
@@ -713,6 +707,7 @@ const Charts = defineComponent({
         default:
           break
       }
+
       chart.clear()
       chart.setOption(option)
       chart_dom.setAttribute(
