@@ -386,14 +386,47 @@ const Charts = defineComponent({
             grid: grid,
             series: series
           }
+
           break
         }
-        case "bullet_across":
-          chart_data.data &&
-            chart_data.data.length > 0 &&
-            chart_data.data.map((ele, idx) => {
-              series.push(ele)
+        case "bullet_across": {
+          const _chart_data: any = []
+          for (let item in chart_data.data) {
+            _chart_data.push({
+              name: item,
+              data: chart_data.data[item]
             })
+          }
+
+          for (let [idx, ele] of _chart_data.entries()) {
+            if (idx === 0) {
+              series = [
+                {
+                  name: ele.name,
+                  type: "bar",
+                  barGap: "-300%",
+                  barWidth: 20,
+                  z: 10,
+                  data: ele.data,
+                  animation: false
+                }
+              ]
+            }
+            if (idx > 0) {
+              series.push({
+                name: ele.name,
+                type: "scatter",
+                symbol: "rect",
+                silent: true,
+                symbolSize: [30, 5],
+                symbolOffset: [0, 0],
+                z: 20,
+                animation: false,
+                data: ele.data
+              })
+            }
+          }
+
           option = {
             title: {
               text: chart_data.name || "",
@@ -415,10 +448,10 @@ const Charts = defineComponent({
                   params.length > 0 &&
                   params.map(item => {
                     result.push(
-                      `<div>${chart_data.marker} ${
-                        chart_data.seriesName
+                      `<div>${item.marker} ${
+                        item.seriesName
                       } : ${thousandsFormateTofixed(
-                        chart_data.value,
+                        item.value,
                         2,
                         false
                       )}</div>`
@@ -431,18 +464,11 @@ const Charts = defineComponent({
                 type: "shadow"
               }
             },
-            legend: {
-              data: chart_data.legend,
-              icon: "roundRect",
-              left: 5,
-              top: -5,
-              itemHeight: 8,
-              itemWidth: 18
-            },
+            legend: legend,
             xAxis: {
-              show: chart_data.showX,
+              show: true,
               type: "value",
-              inverse: chart_data.inverse,
+              inverse: false,
               axisLine: {
                 show: true
               },
@@ -451,7 +477,7 @@ const Charts = defineComponent({
               }
             },
             yAxis: {
-              show: chart_data.showY,
+              show: true,
               type: "category",
               splitLine: {
                 show: false
@@ -487,15 +513,12 @@ const Charts = defineComponent({
               },
               data: chart_data.xAxis
             },
-            grid: {
-              left: 0,
-              right: 0,
-              bottom: 0,
-              containLabel: true
-            },
+            grid: grid,
             series: series
           }
+
           break
+        }
         case "scatter":
           option = {
             title: {
