@@ -90,7 +90,7 @@ const Charts = defineComponent({
         case "line":
           for (let ele in chart_data.data) {
             legend.data.unshift(ele)
-            series.push({
+            series.unshift({
               name: ele,
               type: chart_data.type,
               smooth: true,
@@ -176,7 +176,7 @@ const Charts = defineComponent({
         case "bar":
           for (let ele in chart_data.data) {
             legend.data.unshift(ele)
-            series.push({
+            series.unshift({
               name: ele,
               type: chart_data.type,
               smooth: true,
@@ -287,7 +287,7 @@ const Charts = defineComponent({
               ]
             }
             if (idx > 0) {
-              series.push({
+              series.unshift({
                 name: ele.name,
                 type: "scatter",
                 symbol: "rect",
@@ -418,7 +418,7 @@ const Charts = defineComponent({
               ]
             }
             if (idx > 0) {
-              series.push({
+              series.unshift({
                 name: ele.name,
                 type: "scatter",
                 symbol: "rect",
@@ -586,7 +586,7 @@ const Charts = defineComponent({
                 return [point[0], "10%"]
               },
               formatter: function (params) {
-                const result = `${params.value[0]} <br> ${params.value[2]}`
+                const result = `${params.marker} ${params.seriesName} ${params.value[0]} <br> ${params.value[2]}`
                 return result
               }
             },
