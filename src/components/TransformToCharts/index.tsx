@@ -28,15 +28,16 @@ const Charts = defineComponent({
   },
   setup() {
     const {props} = getCurrentInstance()
+
     const state = reactive({
       charts_height: "300px",
       charts_type: [
         {type: "line", name: "折线图"},
         {type: "bar", name: "柱状图"},
-        // { type: "pie", name: "饼图" },
         {type: "bullet", name: "子弹图"},
         {type: "bullet_across", name: "横向子弹图"},
-        {type: "scatter", name: "离散图"}
+        {type: "scatter", name: "散点图"}
+        // { type: "pie", name: "饼图" },
         // { type: "radar", name: "雷达图" }
       ]
     })
@@ -48,12 +49,6 @@ const Charts = defineComponent({
         xAxis: props.xAxis,
         type: type
       }
-
-      let chart_dom: HTMLElement = document.getElementById(id)
-      if (!chart_dom) return
-      const chart = echarts.init(chart_dom, "walden")
-      let series = []
-      let option = {}
       const data_length =
         (chart_data.data &&
           chart_data.data[0] &&
@@ -61,6 +56,12 @@ const Charts = defineComponent({
           chart_data.data[0].data.length) ||
         4
 
+      let chart_dom: HTMLElement = document.getElementById(id)
+      if (!chart_dom) return
+
+      const chart = echarts.init(chart_dom, "walden")
+      let series = []
+      let option = {}
       const grid = {
         left: "6%",
         right: "6%",
@@ -82,12 +83,13 @@ const Charts = defineComponent({
         top: 0,
         left: "6%",
         padding: 0,
-        data: chart_data.legend
+        data: []
       }
 
       switch (chart_data.type) {
         case "line":
           for (let ele in chart_data.data) {
+            legend.data.unshift(ele)
             series.push({
               name: ele,
               type: chart_data.type,
@@ -173,6 +175,7 @@ const Charts = defineComponent({
           break
         case "bar":
           for (let ele in chart_data.data) {
+            legend.data.unshift(ele)
             series.push({
               name: ele,
               type: chart_data.type,
@@ -269,6 +272,7 @@ const Charts = defineComponent({
           }
 
           for (let [idx, ele] of _chart_data.entries()) {
+            legend.data.unshift(ele)
             if (idx === 0) {
               series = [
                 {
@@ -399,6 +403,7 @@ const Charts = defineComponent({
           }
 
           for (let [idx, ele] of _chart_data.entries()) {
+            legend.data.unshift(ele)
             if (idx === 0) {
               series = [
                 {
@@ -520,6 +525,27 @@ const Charts = defineComponent({
           break
         }
         case "scatter":
+          for (let ele in chart_data.data) {
+            legend.data.unshift(ele)
+            const item_arr = []
+            for (let [index, value] of chart_data.xAxis.entries()) {
+              item_arr.push([value, ele, chart_data.data[ele][index]])
+            }
+            series.unshift({
+              name: ele,
+              data: item_arr,
+              type: chart_data.type,
+              symbol: "pin",
+              // symbolOffset: [0, `${idx * 100}%`],
+              symbolSize: function (data) {
+                return data[2] ? 20 : 0
+              },
+              itemStyle: {
+                shadowBlur: 0,
+                shadowOffsetY: 0
+              }
+            })
+          }
           option = {
             title: {
               show: false,
@@ -528,10 +554,7 @@ const Charts = defineComponent({
                 fontSize: 14
               }
             },
-            legend: {
-              right: 10,
-              data: []
-            },
+            legend: legend,
             xAxis: {
               type: "category",
               boundaryGap: true,
@@ -567,21 +590,7 @@ const Charts = defineComponent({
                 return result
               }
             },
-            series: [
-              {
-                name: "",
-                data: chart_data.data[0],
-                type: chart_data.type,
-                symbol: "pin",
-                symbolSize: function (data) {
-                  return data[2] ? 20 : 0
-                },
-                itemStyle: {
-                  shadowBlur: 0,
-                  shadowOffsetY: 0
-                }
-              }
-            ]
+            series: series
           }
           break
         case "pie":
