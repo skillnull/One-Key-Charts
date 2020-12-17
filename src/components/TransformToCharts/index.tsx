@@ -36,8 +36,8 @@ const Charts = defineComponent({
         {type: "bar", name: "柱状图"},
         {type: "bullet", name: "子弹图"},
         {type: "bullet_across", name: "横向子弹图"},
-        {type: "scatter", name: "散点图"}
-        // { type: "pie", name: "饼图" },
+        {type: "scatter", name: "散点图"},
+        {type: "pie", name: "饼图"}
         // { type: "radar", name: "雷达图" }
       ]
     })
@@ -536,7 +536,7 @@ const Charts = defineComponent({
               data: item_arr,
               type: chart_data.type,
               symbol: "pin",
-              // symbolOffset: [0, `${idx * 100}%`],
+              symbolOffset: [0, 0],
               symbolSize: function (data) {
                 return data[2] ? 20 : 0
               },
@@ -595,16 +595,16 @@ const Charts = defineComponent({
           break
         case "pie":
           for (let ele in chart_data.data) {
-            series.push({
+            series.unshift({
               name: ele,
               type: chart_data.type,
               radius: ["45%", "70%"],
-              center: ["50%", "55%"],
+              center: ["50%", "50%"],
               label: {
                 show: true,
                 distanceToLabelLine: 1,
                 fontSize: 10,
-                formatter: "{b}({d}%)",
+                formatter: "{a}{b}({d}%)",
                 position: "outside"
               },
               labelLine: {
@@ -640,10 +640,11 @@ const Charts = defineComponent({
               trigger: "item",
               confine: true,
               formatter: params => {
-                console.log(params)
-                const result = `${params.marker}${
-                  params.name
-                } : ${thousandsFormateTofixed(params.value, 2, true)}`
+                const result = `${params.marker}${params.seriesName}(${
+                  params.dataIndex
+                }) : ${thousandsFormateTofixed(params.value, 2, true)}(${
+                  params.percent
+                }%)`
                 return result
               }
             },
